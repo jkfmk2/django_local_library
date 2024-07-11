@@ -49,6 +49,8 @@ class Book(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(
         Genre, help_text="Select a genre for this book")
+    
+    language = models.ForeignKey("Language", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         """String for representing the Model object."""
@@ -108,3 +110,18 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
+    
+class Language(models.Model):
+    """Model representing language"""
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
+
+    def __str__(self):
+        """String for representing the Model object"""
+        return self.name
+    
+    def get_absolute_url(self):
+        """Returns the URL to access a particular language instance."""
+        return reverse('language-detail', args=[str[self.id]])
